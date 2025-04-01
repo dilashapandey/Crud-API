@@ -60,6 +60,20 @@ app.put('/api/product/:id', async(req, res) => {
   }
 });
 
+//delete product
+app.delete('/api/product/:id', async(req, res) => {
+  try {
+    const product = await product_model.findByIdAndDelete(req.params.id);
+    if (!product) {
+      return res.status(404).send('Product not found');
+    }
+    res.status(200).json({ message: 'Product deleted successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 mongoose.connect(MONGO_URL)
 .then(() => {
   console.log('Connected to MongoDB');
